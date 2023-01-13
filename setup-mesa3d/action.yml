@@ -7,7 +7,7 @@ inputs:
     required: false
   install-directory:
     description: Location to install Mesa3D
-    default: ${{ github.repository }}
+    default: "."
     required: false
 runs:
   using: composite
