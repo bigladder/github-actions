@@ -3,7 +3,7 @@ name: Test
 on: push
 
 jobs:
-  test:
+  python-poetry:
     strategy:
       fail-fast: false
       matrix:
@@ -12,7 +12,7 @@ jobs:
     defaults:
       run:
         shell: bash
-    name: Test py ${{ matrix.python-version }} on ${{ matrix.os }}
+    name: Poetry py ${{ matrix.python-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -21,6 +21,18 @@ jobs:
         uses: ./setup-python-poetry
         with:
           python-version: ${{ matrix.python-version }}
+  mesa-3d:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest]
+    defaults:
+      run:
+        shell: pwsh
+    name: Mesa3D on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Setup Mesa3D
         uses: ./setup-mesa3d
-        if: matrix.python-version == '3.10'
