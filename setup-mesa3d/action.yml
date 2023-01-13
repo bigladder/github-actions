@@ -1,0 +1,28 @@
+name: "Setup Mesa3D"
+description: "Setup Mesa3D (Windows only)"
+inputs:
+  mesa3d-version:
+    description: Mesa3D version to setup
+    default: "22.3.3"
+    required: false
+  install-directory:
+    description: Location to install Mesa3D
+    default: ${{ github.repository }}
+    required: false
+runs:
+  using: composite
+  steps:
+    - name: Download Mesa3D
+      if: runner.os == 'Windows'
+      shell: cmd
+      run: curl.exe -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/${{ inputs.mesa3d-version }}/mesa3d-${{ inputs.mesa3d-version }}-release-msvc.7z
+      working-directory: ${{ inputs.install-directory }}
+    - name: Install Mesa3D on Windows
+      if: runner.os == 'Windows'
+      shell: cmd
+      run: |
+        "C:\Program Files\7-Zip\7z.exe" x mesa.7z
+        mklink opengl32.dll "x64\opengl32.dll"
+        mklink libglapi.dll "x64\libglapi.dll"
+      working-directory: ${{ inputs.install-directory }}
+
