@@ -14,15 +14,15 @@ runs:
   steps:
     - name: Download Mesa3D
       if: runner.os == 'Windows'
-      shell: pwsh
-      run: Invoke-Webrequest -OutFile mesa.7z -URI https://github.com/pal1000/mesa-dist-win/releases/download/${{ inputs.mesa3d-version }}/mesa3d-${{ inputs.mesa3d-version }}-release-msvc.7z
+      shell: cmd
+      run: curl.exe -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/${{ inputs.mesa3d-version }}/mesa3d-${{ inputs.mesa3d-version }}-release-msvc.7z
       working-directory: ${{ inputs.install-directory }}
     - name: Install Mesa3D on Windows
       if: runner.os == 'Windows'
-      shell: pwsh
+      shell: cmd
       run: |
         "C:\Program Files\7-Zip\7z.exe" x mesa.7z
-        New-Item -Path opengl32.dll -ItemType SymbolicLink -Value "x64\opengl32.dll"
-        New-Item -Path libglapi.dll -ItemType SymbolicLink -Value "x64\libglapi.dll"
+        mklink opengl32.dll "x64\opengl32.dll"
+        mklink libglapi.dll "x64\libglapi.dll"
       working-directory: ${{ inputs.install-directory }}
 
