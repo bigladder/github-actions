@@ -3,7 +3,7 @@ description: "Setup Mesa3D (Windows only)"
 inputs:
   mesa3d-version:
     description: Mesa3D version to setup
-    default: "22.3.3"
+    default: "23.1.6"
     required: false
   install-directory:
     description: Location to install Mesa3D
@@ -12,16 +12,28 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Download Mesa3D
+    - name: Cache downloads
       if: runner.os == 'Windows'
+      uses: actions/cache@v3
+      id: cache
+      with:
+        path: |
+          ${{ inputs.install-directory }}\x64\opengl32.dll
+          ${{ inputs.install-directory }}\x64\libglapi.dll
+        key: mesa3d-${{ inputs.mesa3d-version }}-cache
+    - name: Download Mesa3D
+      if: runner.os == 'Windows' && steps.cache.outputs.cache-hit != 'true'
       shell: cmd
-      run: curl.exe -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/${{ inputs.mesa3d-version }}/mesa3d-${{ inputs.mesa3d-version }}-release-msvc.7z
+      run: |
+        curl.exe -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/${{ inputs.mesa3d-version }}/mesa3d-${{ inputs.mesa3d-version }}-release-msvc.7z
+        "C:\Program Files\7-Zip\7z.exe" x mesa.7z
       working-directory: ${{ inputs.install-directory }}
     - name: Install Mesa3D on Windows
       if: runner.os == 'Windows'
       shell: cmd
       run: |
-        "C:\Program Files\7-Zip\7z.exe" x mesa.7z
+        del "opengl32.dll" >nul 2>&1
+        del "libglapi.dll" >nul 2>&1
         mklink opengl32.dll "x64\opengl32.dll"
         mklink libglapi.dll "x64\libglapi.dll"
       working-directory: ${{ inputs.install-directory }}
