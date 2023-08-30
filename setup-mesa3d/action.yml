@@ -3,7 +3,7 @@ description: "Setup Mesa3D (Windows only)"
 inputs:
   mesa3d-version:
     description: Mesa3D version to setup
-    default: "23.1.6"
+    default: "20.3.4"  # Newer versions have a "known issue" (https://github.com/pal1000/mesa-dist-win/blob/4f66d3accfa7fd94baa184109ff7ac8843eae035/readme.md#L50)
     required: false
   install-directory:
     description: Location to install Mesa3D
