@@ -5,6 +5,10 @@ inputs:
     description: Mesa3D version to setup
     default: "20.3.4"  # Newer versions have a "known issue" (https://github.com/pal1000/mesa-dist-win/blob/4f66d3accfa7fd94baa184109ff7ac8843eae035/readme.md#L50)
     required: false
+  architecture:
+    description: Architecture (x64 or x86)
+    default: "x64"
+    required: false
   install-directory:
     description: Location to install Mesa3D
     default: "."
@@ -18,9 +22,9 @@ runs:
       id: cache
       with:
         path: |
-          ${{ inputs.install-directory }}\x64\opengl32.dll
-          ${{ inputs.install-directory }}\x64\libglapi.dll
-        key: mesa3d-${{ inputs.mesa3d-version }}-cache
+          ${{ inputs.install-directory }}\${{ inputs.architecture }}\opengl32.dll
+          ${{ inputs.install-directory }}\${{ inputs.architecture }}\libglapi.dll
+        key: mesa3d-${{ inputs.mesa3d-version }}-${{ inputs.architecture }}-cache
     - name: Download Mesa3D
       if: runner.os == 'Windows' && steps.cache.outputs.cache-hit != 'true'
       shell: cmd
@@ -34,7 +38,7 @@ runs:
       run: |
         del "opengl32.dll" >nul 2>&1
         del "libglapi.dll" >nul 2>&1
-        mklink opengl32.dll "x64\opengl32.dll"
-        mklink libglapi.dll "x64\libglapi.dll"
+        mklink opengl32.dll "${{ inputs.architecture }}\opengl32.dll"
+        mklink libglapi.dll "${{ inputs.architecture }}\libglapi.dll"
       working-directory: ${{ inputs.install-directory }}
 
