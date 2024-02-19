@@ -1,16 +1,24 @@
 name: "Setup Markdown to PDF tooling"
 description: "Setup Markdown to PDF tooling"
 inputs:
-  texlive-distribution:
-    description: Year of TeX Live distribution
-    default: "2023"
+  tinytex-version-year:
+    description: Year portion of the TinyTeX version number, used for historic TeX Live distributions (https://github.com/rstudio/tinytex-releases/releases)
+    default: "2024"
+    required: false
+  tinytex-version-release:
+    description: Release portion of the TinyTeX version number (https://github.com/rstudio/tinytex-releases/releases)
+    default: "02"
+    required: false
+  use-historic-texlive-distribution:
+    description: Used if the TeX Live distribution needs to pull from a historic repository
+    default: 'false'
     required: false
   pandoc-version:
     description: Pandoc version to install (https://github.com/jgm/pandoc/releases)
     default: "2.11.3.2"
     required: false
   crossref-version:
-    description: Pandoc cross ref version (needs to match pandoc-version) (https://github.com/lierdakil/pandoc-crossref/releases)
+    description: Pandoc cross ref version, needs to match pandoc-version (https://github.com/lierdakil/pandoc-crossref/releases)
     default: "0.3.9.0a"
     required: false
 runs:
@@ -20,11 +28,13 @@ runs:
       uses: r-lib/actions/setup-tinytex@v2
       env:
         TINYTEX_INSTALLER: TinyTeX-1
+        TINYTEX_VERSION: "${{ input.tinytex-version-year }}.${{ input.tinytex-version-release }}"
     - run: tlmgr --version
       shell: pwsh # Needed because tlmgr is .bat file on Windows
-#    - name: Set TeX Live repository
-#      run: tlmgr option repository ftp://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${{ inputs.texlive-distribution }}/tlnet-final
-#      shell: bash
+    - name: Set TeX Live repository
+      if: input.use-historic-texlive-distribution == 'false'
+      run: tlmgr option repository ftp://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${{ input.tinytex-version-year }}/tlnet-final
+      shell: pwsh # Needed because tlmgr is .bat file on Windows
     - name: Update tlmgr
       run: tlmgr update --self
       shell: pwsh # Needed because tlmgr is .bat file on Windows
