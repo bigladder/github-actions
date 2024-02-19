@@ -20,22 +20,14 @@ runs:
       uses: r-lib/actions/setup-tinytex@v2
       env:
         TINYTEX_INSTALLER: TinyTeX-1
-    - run: echo $PATH
-      shell: bash
-    - run: ls /c/Users/runneradmin/AppData/Roaming/TinyTeX/bin/windows
-      if: runner.os == 'Windows'
-      shell: bash
     - run: tlmgr --version
-      shell: bash
+      shell: pwsh # Needed because tlmgr is .bat file on Windows
 #    - name: Set TeX Live repository
 #      run: tlmgr option repository ftp://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${{ inputs.texlive-distribution }}/tlnet-final
 #      shell: bash
     - name: Update tlmgr
       run: tlmgr update --self
-      shell: bash
-    - name: Add tlmgr to path
-      run: tlmgr path add
-      shell: bash
+      shell: pwsh # Needed because tlmgr is .bat file on Windows
     - name: Install Pandoc
       uses: r-lib/actions/setup-pandoc@v2
       with:
