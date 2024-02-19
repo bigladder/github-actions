@@ -22,6 +22,9 @@ runs:
         TINYTEX_INSTALLER: TinyTeX-1
     - run: echo $PATH
       shell: bash
+    - run: ls /c/Users/runneradmin/AppData/Roaming/TinyTeX/bin/windows
+      if: runner.os != 'Windows'
+      shell: bash
     - run: tlmgr --version
       shell: bash
 #    - name: Set TeX Live repository
