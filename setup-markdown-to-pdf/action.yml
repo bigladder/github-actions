@@ -18,7 +18,6 @@ runs:
       uses: r-lib/actions/setup-tinytex@v2
       env:
         TINYTEX_INSTALLER: TinyTeX-0
-      shell: bash
     - name: Set TeX Live repository
       run: tlmgr option repository ftp://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${{ inputs.texlive-distribution }}/tlnet-final
       shell: bash
@@ -32,7 +31,6 @@ runs:
       uses: r-lib/actions/setup-pandoc@v2
       with:
         pandoc-version: ${{ inputs.pandoc-version }}
-      shell: bash
     - name: Install Pandoc crossref
       run: |
         curl.exe -L --output pandoc-crossref.7z --url https://github.com/lierdakil/pandoc-crossref/releases/download/v0.3.17.0c/pandoc-crossref-Windows.7z
