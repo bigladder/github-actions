@@ -1,0 +1,41 @@
+name: "Setup Markdown to PDF tooling"
+description: "Setup Markdown to PDF tooling"
+inputs:
+  texlive-distribution:
+    description: Year of TeX Live distribution
+    default: "2023"
+    required: false
+  pandoc-version:
+    description: Pandoc version to install
+    default: "2.11.3.2"
+    required: false
+runs:
+  using: composite
+  steps:
+    - run: echo $PATH
+      shell: bash
+    - name: Install TinyTeX
+      uses: r-lib/actions/setup-tinytex@v2
+      env:
+        TINYTEX_INSTALLER: TinyTeX-0
+      shell: bash
+    - name: Set TeX Live repository
+      run: tlmgr option repository ftp://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${{ inputs.texlive-distribution }}/tlnet-final
+      shell: bash
+    - name: Update tlmgr
+      run: tlmgr update --self
+      shell: bash
+    - name: Add tlmgr to path
+      run: tlmgr path add
+      shell: bash
+    - name: Install Pandoc
+      uses: r-lib/actions/setup-pandoc@v2
+      with:
+        pandoc-version: ${{ inputs.pandoc-version }}
+      shell: bash
+    - name: Install Pandoc crossref
+      run: |
+        curl.exe -L --output pandoc-crossref.7z --url https://github.com/lierdakil/pandoc-crossref/releases/download/v0.3.17.0c/pandoc-crossref-Windows.7z
+        "C:\Program Files\7-Zip\7z.exe" x pandoc-crossref.7z
+      shell: bash
+
