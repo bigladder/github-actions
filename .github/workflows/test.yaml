@@ -55,4 +55,4 @@ jobs:
       - name: Setup Markdown to PDF
         uses: ./setup-markdown-to-pdf
       - name: Test
-        run: echo "$$ E = mc^ 2 $$ " | pandoc -F pandoc-crossref --citeproc -t latex
+        run: echo "**Equation** [@eq:label]:\n\n\$\$E = mc^2\$\$ {#eq:label}" | pandoc -F pandoc-crossref --citeproc -t latex
