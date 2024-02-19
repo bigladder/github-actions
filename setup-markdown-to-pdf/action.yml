@@ -28,12 +28,12 @@ runs:
       uses: r-lib/actions/setup-tinytex@v2
       env:
         TINYTEX_INSTALLER: TinyTeX-1
-        TINYTEX_VERSION: "${{ input.tinytex-version-year }}.${{ input.tinytex-version-release }}"
+        TINYTEX_VERSION: "${{ inputs.tinytex-version-year }}.${{ inputs.tinytex-version-release }}"
     - run: tlmgr --version
       shell: pwsh # Needed because tlmgr is .bat file on Windows
     - name: Set TeX Live repository
-      if: input.use-historic-texlive-distribution == 'false'
-      run: tlmgr option repository ftp://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${{ input.tinytex-version-year }}/tlnet-final
+      if: inputs.use-historic-texlive-distribution == 'false'
+      run: tlmgr option repository ftp://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${{ inputs.tinytex-version-year }}/tlnet-final
       shell: pwsh # Needed because tlmgr is .bat file on Windows
     - name: Update tlmgr
       run: tlmgr update --self
