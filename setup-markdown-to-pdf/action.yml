@@ -17,7 +17,9 @@ runs:
     - name: Install TinyTeX
       uses: r-lib/actions/setup-tinytex@v2
       env:
-        TINYTEX_INSTALLER: TinyTeX-0
+        TINYTEX_INSTALLER: TinyTeX-1
+    - run: tlmgr --version
+      shell: bash
     - name: Set TeX Live repository
       run: tlmgr option repository ftp://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${{ inputs.texlive-distribution }}/tlnet-final
       shell: bash
