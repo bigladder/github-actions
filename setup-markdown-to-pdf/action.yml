@@ -46,11 +46,11 @@ runs:
       if: runner.os == 'Windows'
       run: |
         curl.exe -L --output pandoc-crossref.7z --url https://github.com/lierdakil/pandoc-crossref/releases/download/v${{ inputs.crossref-version }}/pandoc-crossref-${{ runner.os }}.7z
-        "C:\Program Files\7-Zip\7z.exe" x pandoc-crossref.7z
+        "C:\Program Files\7-Zip\7z.exe" e -y pandoc-crossref.7z -o/c/Users/runneradmin/bin
       shell: bash
     - name: Install Pandoc crossref (Non-windows)
       if: runner.os != 'Windows'
       run: |
         curl -L --output pandoc-crossref.tar.xz --url https://github.com/lierdakil/pandoc-crossref/releases/download/v${{ inputs.crossref-version }}/pandoc-crossref-${{ runner.os }}.tar.xz
-        tar -xf pandoc-crossref.tar.xz
+        tar -xf pandoc-crossref.tar.xz -C /usr/local/bin
       shell: bash
