@@ -32,7 +32,7 @@ runs:
     - run: tlmgr --version
       shell: pwsh # Needed because tlmgr is .bat file on Windows
     - name: Set TeX Live repository
-      if: inputs.use-historic-texlive-distribution == 'false'
+      if: inputs.use-historic-texlive-distribution == 'true'
       run: tlmgr option repository ftp://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${{ inputs.tinytex-version-year }}/tlnet-final
       shell: pwsh # Needed because tlmgr is .bat file on Windows
     - name: Update tlmgr
