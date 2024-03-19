@@ -7,7 +7,7 @@ inputs:
     required: false
   tinytex-version-release:
     description: Release portion of the TinyTeX version number (https://github.com/rstudio/tinytex-releases/releases)
-    default: "02"
+    default: "03.13"
     required: false
   use-historic-texlive-distribution:
     description: Used if the TeX Live distribution needs to pull from a historic repository
